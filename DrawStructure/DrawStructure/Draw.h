@@ -19,7 +19,7 @@ namespace DrawStructure {
 		{
 			InitializeComponent();
 			//
-			//TODO: W tym miejscu dodaj kod konstruktora
+			//TODO: W tym miejscu dodaj kod konstruktor
 			//
 		}
 
