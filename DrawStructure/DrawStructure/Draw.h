@@ -1,5 +1,14 @@
 #pragma once
+#include <windows.h>
+#include <tchar.h>
+#include <fstream>
+#include <iostream>
+#include <string>
+#include <stddef.h>
 
+#include <string>
+
+#include <msclr\marshal_cppstd.h>
 namespace DrawStructure {
 
 	using namespace System;
@@ -59,6 +68,13 @@ namespace DrawStructure {
 
 	private: System::Windows::Forms::NumericUpDown^  select_row;
 	private: System::Windows::Forms::Button^  add_end;
+	private: System::Windows::Forms::ToolStripMenuItem^  wybierzToolStripMenuItem;
+
+	private: System::Windows::Forms::FolderBrowserDialog^  folderBrowserDialog1;
+	private: System::Windows::Forms::OpenFileDialog^  openFileDialog1;
+	private: System::Windows::Forms::TextBox^  textBox1;
+
+
 
 
 
@@ -83,6 +99,7 @@ namespace DrawStructure {
 		{
 			this->menuToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->exitToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->wybierzToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->menuStrip1 = (gcnew System::Windows::Forms::MenuStrip());
 			this->table = (gcnew System::Windows::Forms::DataGridView());
 			this->t_name = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
@@ -96,6 +113,9 @@ namespace DrawStructure {
 			this->remove_row = (gcnew System::Windows::Forms::Button());
 			this->select_row = (gcnew System::Windows::Forms::NumericUpDown());
 			this->add_end = (gcnew System::Windows::Forms::Button());
+			this->folderBrowserDialog1 = (gcnew System::Windows::Forms::FolderBrowserDialog());
+			this->openFileDialog1 = (gcnew System::Windows::Forms::OpenFileDialog());
+			this->textBox1 = (gcnew System::Windows::Forms::TextBox());
 			this->menuStrip1->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->table))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->select_row))->BeginInit();
@@ -103,7 +123,10 @@ namespace DrawStructure {
 			// 
 			// menuToolStripMenuItem
 			// 
-			this->menuToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->exitToolStripMenuItem });
+			this->menuToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(2) {
+				this->exitToolStripMenuItem,
+					this->wybierzToolStripMenuItem
+			});
 			this->menuToolStripMenuItem->Name = L"menuToolStripMenuItem";
 			this->menuToolStripMenuItem->Size = System::Drawing::Size(50, 20);
 			this->menuToolStripMenuItem->Text = L"Menu";
@@ -111,8 +134,15 @@ namespace DrawStructure {
 			// exitToolStripMenuItem
 			// 
 			this->exitToolStripMenuItem->Name = L"exitToolStripMenuItem";
-			this->exitToolStripMenuItem->Size = System::Drawing::Size(92, 22);
+			this->exitToolStripMenuItem->Size = System::Drawing::Size(114, 22);
 			this->exitToolStripMenuItem->Text = L"Exit";
+			// 
+			// wybierzToolStripMenuItem
+			// 
+			this->wybierzToolStripMenuItem->Name = L"wybierzToolStripMenuItem";
+			this->wybierzToolStripMenuItem->Size = System::Drawing::Size(114, 22);
+			this->wybierzToolStripMenuItem->Text = L"wybierz";
+			this->wybierzToolStripMenuItem->Click += gcnew System::EventHandler(this, &Draw::wybierzToolStripMenuItem_Click);
 			// 
 			// menuStrip1
 			// 
@@ -213,11 +243,23 @@ namespace DrawStructure {
 			this->add_end->UseVisualStyleBackColor = true;
 			this->add_end->Click += gcnew System::EventHandler(this, &Draw::add_end_Click);
 			// 
+			// openFileDialog1
+			// 
+			this->openFileDialog1->FileName = L"openFileDialog1";
+			// 
+			// textBox1
+			// 
+			this->textBox1->Location = System::Drawing::Point(851, 528);
+			this->textBox1->Name = L"textBox1";
+			this->textBox1->Size = System::Drawing::Size(100, 20);
+			this->textBox1->TabIndex = 7;
+			// 
 			// Draw
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(1173, 586);
+			this->Controls->Add(this->textBox1);
 			this->Controls->Add(this->add_end);
 			this->Controls->Add(this->select_row);
 			this->Controls->Add(this->remove_row);
@@ -249,6 +291,55 @@ private: System::Void remove_row_Click(System::Object^  sender, System::EventArg
 private: System::Void add_end_Click(System::Object^  sender, System::EventArgs^  e) {
 	int x = table->RowCount;
 	table->Rows->Add();
+}
+private: System::Void wybierzToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
+
+	if (openFileDialog1->ShowDialog() == System::Windows::Forms::DialogResult::OK)
+	{
+		System::IO::StreamReader^sr = System::IO::File::OpenText(openFileDialog1->FileName);
+		
+		try {
+			std::string napis;
+			System::String^ s = openFileDialog1->FileName;
+			msclr::interop::marshal_context context;
+			std::string ss = context.marshal_as<std::string>(s);
+			table->RowCount = 20;
+			table->ColumnCount = 7;
+			int row = 0;
+			//String^ sss = "";
+
+			//while ((sss = sr->ReadLine()) != null)
+			//{
+			//	row += 1;
+			//}
+
+			System::String^ str = row.ToString();
+			textBox1->Text = str;
+			std::ifstream plik;
+			
+			plik.open(ss);
+			int i, j = 0;
+			while (plik >> napis)
+			{
+				System::String^ napisA = gcnew String(napis.c_str());
+				table->Rows[j]->Cells[i]->Value = napisA;
+				i++;
+				if (i == 5) {
+					j++;
+					i = 0;
+				};
+			};
+
+
+			plik.close();
+		}
+		finally{
+		if (sr)
+		delete (IDisposable^)(sr);
+		}
+	}
+	
+
 }
 };
 }
