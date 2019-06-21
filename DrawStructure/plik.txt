@@ -1,11 +1,9 @@
-1 GaAs 3.450 5.0 200.0
-2 Al(0.90)GaAs 2.972 2.0 109.4
-3 Al(0.10)GaAs 3.401 4.5 95.6
-4 Al(0.90)GaAs 2.972 2.0 109.4
-5 Al(0.10)GaAs 3.401 4.5 95.6
-6 Al(0.90)GaAs 2.972 2.0 109.4
-7 Al(0.10)GaAs 3.401 4.5 95.6
-8 Al(0.90)GaAs 2.972 2.0 109.4
-9 Al(0.10)GaAs 3.401 4.5 95.6
-10 Al(0.90)GaAs 2.972 2.0 109.4
-11 GaAs 3.450 5.0 200.0
+cos pó³przewodnik 2 100 150 4 5
+cos2 metal 1 100 120 5 6
+cos3 dielektryk 3 100 140 3 7
+cos4 pó³przewodnik 5 100 100 2 2
+cos5 metal 4 100 130 4 5
+cos6 dielektryk 8 100 150 5 2
+cos7 pó³przewodnik 7 100 160 3 1
+cos8 metal 6 100 130 2 6
+cos9 dielektryk 9 100 110 6 4

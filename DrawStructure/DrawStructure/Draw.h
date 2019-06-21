@@ -55,13 +55,13 @@ namespace DrawStructure {
 	private: System::Windows::Forms::ToolStripMenuItem^  exitToolStripMenuItem;
 	private: System::Windows::Forms::MenuStrip^  menuStrip1;
 	private: System::Windows::Forms::DataGridView^  table;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^  t_name;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^  t_material;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^  t_position;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^  t_width;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^  t_length;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^  t_conductivity;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^  t_thermal;
+
+
+
+
+
+
+
 	private: System::Windows::Forms::Button^  add_row;
 	private: System::Windows::Forms::Button^  remove_row;
 
@@ -72,7 +72,27 @@ namespace DrawStructure {
 
 	private: System::Windows::Forms::FolderBrowserDialog^  folderBrowserDialog1;
 	private: System::Windows::Forms::OpenFileDialog^  openFileDialog1;
-	private: System::Windows::Forms::TextBox^  textBox1;
+
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  t_name;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  t_material;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  t_position;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  t_width;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  t_length;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  t_conductivity;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  t_thermal;
+	private: System::Windows::Forms::ToolStripMenuItem^  zapiszToolStripMenuItem;
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -98,8 +118,9 @@ namespace DrawStructure {
 		void InitializeComponent(void)
 		{
 			this->menuToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
-			this->exitToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->zapiszToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->wybierzToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->exitToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->menuStrip1 = (gcnew System::Windows::Forms::MenuStrip());
 			this->table = (gcnew System::Windows::Forms::DataGridView());
 			this->t_name = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
@@ -115,7 +136,6 @@ namespace DrawStructure {
 			this->add_end = (gcnew System::Windows::Forms::Button());
 			this->folderBrowserDialog1 = (gcnew System::Windows::Forms::FolderBrowserDialog());
 			this->openFileDialog1 = (gcnew System::Windows::Forms::OpenFileDialog());
-			this->textBox1 = (gcnew System::Windows::Forms::TextBox());
 			this->menuStrip1->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->table))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->select_row))->BeginInit();
@@ -123,19 +143,20 @@ namespace DrawStructure {
 			// 
 			// menuToolStripMenuItem
 			// 
-			this->menuToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(2) {
-				this->exitToolStripMenuItem,
-					this->wybierzToolStripMenuItem
+			this->menuToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(3) {
+				this->zapiszToolStripMenuItem,
+					this->wybierzToolStripMenuItem, this->exitToolStripMenuItem
 			});
 			this->menuToolStripMenuItem->Name = L"menuToolStripMenuItem";
 			this->menuToolStripMenuItem->Size = System::Drawing::Size(50, 20);
 			this->menuToolStripMenuItem->Text = L"Menu";
 			// 
-			// exitToolStripMenuItem
+			// zapiszToolStripMenuItem
 			// 
-			this->exitToolStripMenuItem->Name = L"exitToolStripMenuItem";
-			this->exitToolStripMenuItem->Size = System::Drawing::Size(114, 22);
-			this->exitToolStripMenuItem->Text = L"Exit";
+			this->zapiszToolStripMenuItem->Name = L"zapiszToolStripMenuItem";
+			this->zapiszToolStripMenuItem->Size = System::Drawing::Size(114, 22);
+			this->zapiszToolStripMenuItem->Text = L"Zapisz";
+			this->zapiszToolStripMenuItem->Click += gcnew System::EventHandler(this, &Draw::zapiszToolStripMenuItem_Click);
 			// 
 			// wybierzToolStripMenuItem
 			// 
@@ -144,12 +165,18 @@ namespace DrawStructure {
 			this->wybierzToolStripMenuItem->Text = L"wybierz";
 			this->wybierzToolStripMenuItem->Click += gcnew System::EventHandler(this, &Draw::wybierzToolStripMenuItem_Click);
 			// 
+			// exitToolStripMenuItem
+			// 
+			this->exitToolStripMenuItem->Name = L"exitToolStripMenuItem";
+			this->exitToolStripMenuItem->Size = System::Drawing::Size(114, 22);
+			this->exitToolStripMenuItem->Text = L"Exit";
+			// 
 			// menuStrip1
 			// 
 			this->menuStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->menuToolStripMenuItem });
 			this->menuStrip1->Location = System::Drawing::Point(0, 0);
 			this->menuStrip1->Name = L"menuStrip1";
-			this->menuStrip1->Size = System::Drawing::Size(1173, 24);
+			this->menuStrip1->Size = System::Drawing::Size(874, 24);
 			this->menuStrip1->TabIndex = 1;
 			this->menuStrip1->Text = L"menuStrip1";
 			// 
@@ -163,7 +190,7 @@ namespace DrawStructure {
 			});
 			this->table->Location = System::Drawing::Point(12, 44);
 			this->table->Name = L"table";
-			this->table->Size = System::Drawing::Size(793, 305);
+			this->table->Size = System::Drawing::Size(794, 316);
 			this->table->TabIndex = 0;
 			this->table->CellContentClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &Draw::table_CellContentClick);
 			// 
@@ -247,19 +274,11 @@ namespace DrawStructure {
 			// 
 			this->openFileDialog1->FileName = L"openFileDialog1";
 			// 
-			// textBox1
-			// 
-			this->textBox1->Location = System::Drawing::Point(851, 528);
-			this->textBox1->Name = L"textBox1";
-			this->textBox1->Size = System::Drawing::Size(100, 20);
-			this->textBox1->TabIndex = 7;
-			// 
 			// Draw
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1173, 586);
-			this->Controls->Add(this->textBox1);
+			this->ClientSize = System::Drawing::Size(874, 526);
 			this->Controls->Add(this->add_end);
 			this->Controls->Add(this->select_row);
 			this->Controls->Add(this->remove_row);
@@ -314,7 +333,6 @@ private: System::Void wybierzToolStripMenuItem_Click(System::Object^  sender, Sy
 			//}
 
 			System::String^ str = row.ToString();
-			textBox1->Text = str;
 			std::ifstream plik;
 			
 			plik.open(ss);
@@ -324,7 +342,7 @@ private: System::Void wybierzToolStripMenuItem_Click(System::Object^  sender, Sy
 				System::String^ napisA = gcnew String(napis.c_str());
 				table->Rows[j]->Cells[i]->Value = napisA;
 				i++;
-				if (i == 5) {
+				if (i == 7) {
 					j++;
 					i = 0;
 				};
@@ -340,6 +358,27 @@ private: System::Void wybierzToolStripMenuItem_Click(System::Object^  sender, Sy
 	}
 	
 
+}
+private: System::Void zapiszToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
+	System::IO::StreamWriter^ sw = gcnew System::IO::StreamWriter("wyniki.txt");
+
+	for (int x = 0; x < table->RowCount; x++) {
+		sw->Write(table->Rows[x]->Cells[0]->Value);
+		sw->Write(" ");
+		sw->Write(table->Rows[x]->Cells[1]->Value);
+		sw->Write(" ");
+		sw->Write(table->Rows[x]->Cells[2]->Value);
+		sw->Write(" ");
+		sw->Write(table->Rows[x]->Cells[3]->Value);
+		sw->Write(" ");
+		sw->Write(table->Rows[x]->Cells[4]->Value);
+		sw->Write(" ");
+		sw->Write(table->Rows[x]->Cells[5]->Value);
+		sw->Write(" ");
+		sw->Write(table->Rows[x]->Cells[6]->Value);
+		sw->Write("\n");
+	}
+	sw->Close();
 }
 };
 }
